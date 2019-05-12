@@ -3,14 +3,18 @@ const sequelize = new Sequelize('poki', 'root', 'PASSWORD', {
     host: 'localhost',
     dialect: 'mysql'
 });
+const Op = Sequelize.Op;
+
 
 const Chat = sequelize.define('chat', {
-    uid: Sequelize.STRING,
+    fromUid: Sequelize.STRING,
+    toUid: Sequelize.STRING,
     name: Sequelize.STRING,
     msg: Sequelize.STRING
   });
 
   module.exports = {
     sequelize: sequelize,
-    Chat: Chat
+    Chat: Chat,
+    Op: Op
   }

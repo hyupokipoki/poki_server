@@ -5,6 +5,7 @@ const model = require('./model');
 
 
 
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
@@ -51,18 +52,28 @@ app.get('/tests/:id', (req, res) => {
     // return res.json(uid)
 
     model.Chat.findAll({
-        where: {
-            uid: uid
-        }
+            // order: [['createAt', 'DESC']],
+            where: {
+                [model.Op.or]: [{fromUid: uid}, {toUid: uid}]
+              }
+            // $or: [
+            //     {
+            //         fromUid: uid
+            //     },
+            //     {
+            //         toUid: uid
+            //     }
+            //   ]
+        // }
     }).then(chat => {
-        if (!chat) {
-            return res.status(404).json({
-                error: 'No chat'
-            });
-        }
+    if (!chat) {
+        return res.status(404).json({
+            error: 'No chat'
+        });
+    }
 
-        return res.json(chat);
-    });
+    return res.json(chat);
+});
 });
 
 //cors 해결을 위해
@@ -79,7 +90,8 @@ app.post('/tests', (req, res) => {
     // req.header("Access-Control-Allow-Origin", "*");
     // res.header('Access-Control-Allow-Origin', '*');
     const msg = req.body.msg || '';
-    const uid = req.body.uid || '';
+    const fromUid = req.body.fromUid || '';
+    const toUid = req.body.toUid || '';
     const name = req.body.name || '';
     if (!msg.length) {
         return res.status(400).json({
@@ -87,7 +99,8 @@ app.post('/tests', (req, res) => {
         });
     }
     model.Chat.create({
-        uid: uid,
+        fromUid: fromUid,
+        toUid: toUid,
         name: name,
         msg: msg
     }).then((chat) => {
