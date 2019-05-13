@@ -98,6 +98,8 @@ app.post('/tests', (req, res) => {
             error: 'Incorrenct name'
         });
     }
+    console.log(fromUid + ' : ' + msg);
+    
     model.Chat.create({
         fromUid: fromUid,
         toUid: toUid,

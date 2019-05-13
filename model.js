@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize('poki', 'root', 'PASSWORD', {
-    host: 'localhost',
+    host: '211.51.76.18',
     dialect: 'mysql'
 });
 const Op = Sequelize.Op;
